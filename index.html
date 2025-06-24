@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en" class="dark"> <!-- Add dark class by default -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nebula AI - Dark LLM Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> <!-- Added marked.js -->
+    <!-- Added KaTeX for Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
+    <!-- End KaTeX -->
+    <!-- Added Prism.js for Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+<link rel="stylesheet" href="css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-jsx.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-tsx.min.js"></script>
+    <!-- Removed PHP component due to errors -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-php.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-cpp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-csharp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-go.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-ruby.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-rust.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+    <script>
+        // Initialize Prism.js when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.Prism) {
+                console.log('Initializing Prism.js on DOMContentLoaded');
+                document.querySelectorAll('pre code').forEach(function(block) {
+                    try {
+                        // Check if the language is supported
+                        const langClass = block.className.match(/language-(\w+)/);
+                        if (langClass && langClass[1]) {
+                            const lang = langClass[1];
+                            // Skip PHP highlighting as it causes errors
+                            if (lang === 'php') {
+                                console.log('Skipping PHP highlighting due to known issues');
+                                return;
+                            }
+
+                            // Only highlight if the language grammar is loaded
+                            if (Prism.languages[lang]) {
+                                Prism.highlightElement(block);
+                            } else {
+                                console.log(`Language grammar for ${lang} not loaded, using plaintext`);
+                                block.className = 'language-plaintext';
+                                Prism.highlightElement(block);
+                            }
+                        } else {
+                            // No language specified, use plaintext
+                            block.className = 'language-plaintext';
+                            Prism.highlightElement(block);
+                        }
+                    } catch (e) {
+                        console.warn('Error highlighting code block:', e);
+                    }
+                });
+            }
+        });
+    </script>
+    <!-- End Prism.js -->
+    <!-- Added Tailwind Typography Plugin -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { // Keep light mode primary colors
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        // Sora-like dark theme colors (updated to match samples)
+                        black: '#000000',
+                        white: '#FFFFFF',
+                        'sora-gray': {
+                            dark: '#1A1A1A',    // Darker gray for cards, selected items
+                            medium: '#333333',  // Medium gray for borders, inputs, secondary elements
+                            light: '#CCCCCC',   // Light gray for subtle text/icons
+                            lighter: '#E5E5E5'  // Very light gray for hover states
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-white dark:bg-black"> <!-- Updated base bg -->
+    <div class="flex flex-col h-screen px-4"> <!-- Changed for full-screen flex column -->
+        <!-- Header -->
+        <header class="sticky top-0 z-20 bg-white dark:bg-black py-4 flex justify-between items-center"> <!-- Updated bg -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 dark:bg-sora-gray-dark flex items-center justify-center"> <!-- Updated dark bg -->
+                    <i class="fas fa-robot text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold gradient-text">Nebula<span class="text-gray-900 dark:text-white">AI</span></h1>
+            </div>
+            <div class="flex space-x-4 items-center"> <!-- Added items-center -->
+                 <!-- Placeholder for Parameters Button -->
+                <button id="toggleParamsBtnHeader" class="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-white dark:hover:bg-sora-gray-dark transition-colors"> <!-- Updated colors -->
+                     <i class="fas fa-sliders-h text-primary-500 dark:text-white"></i>
+                </button>
+                 <!-- End Placeholder -->
+                <button id="themeToggle" class="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-white dark:hover:bg-sora-gray-dark transition-colors"> <!-- Updated colors -->
+                    <i class="fas fa-moon text-primary-500 dark:text-white"></i> <!-- Icon class updated by JS -->
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <!-- Main Chat Area (occupies remaining vertical space) -->
+        <div class="flex-1 overflow-hidden flex flex-col"> <!-- Added classes for flex grow and vertical column flow -->
+             <div class="relative flex-1 bg-gray-50 dark:bg-black rounded-t-xl overflow-hidden flex flex-col"> <!-- Added relative positioning -->
+                    <!-- Chat Header -->
+                    <div class="bg-gray-100 dark:bg-black px-6 py-4 border-b border-gray-200 dark:border-sora-gray-dark flex justify-between items-center max-w-4xl w-full mx-auto"> <!-- Updated bg -->
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Hey there! What's on your mind today?</h2> <!-- Updated text to match sample -->
+                        <div class="flex space-x-2">
+                            <button id="clearChat" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-600 dark:bg-sora-gray-dark dark:hover:bg-sora-gray-medium dark:text-white px-3 py-1 rounded-full transition-colors"> <!-- Updated text color -->
+                                <i class="fas fa-trash-alt mr-1"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Messages Container -->
+                    <div id="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-hide max-w-4xl w-full mx-auto"> <!-- Added width constraint -->
+                        <!-- Initial static greeting removed -->
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="relative sticky bottom-0 z-10 p-4 border-t border-gray-200 dark:border-sora-gray-dark bg-gray-50 dark:bg-black"> <!-- Updated background -->
+                        <!-- System Prompt Indicator - Positioned over the top border -->
+                        <!-- Old System Prompt Indicator Removed -->
+                        <div class="max-w-4xl w-full mx-auto"> <!-- Added wrapper for width constraint -->
+                            <div class="relative">
+                            <textarea id="userInput" class="w-full bg-white dark:bg-black border border-gray-300 dark:border-sora-gray-medium rounded-full px-4 py-3 pr-28 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-sora-gray-light focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-sora-gray-light focus:border-transparent resize-none" placeholder="What do you want to know?"></textarea>
+                            <button id="clearInputBtn" class="absolute top-1/2 -translate-y-1/2 right-16 text-gray-400 hover:text-gray-600 dark:text-sora-gray-light dark:hover:text-white p-1.5 rounded-full transition-colors hidden" title="Clear input">
+                                <i class="fas fa-times text-sm"></i>
+                            </button>
+                            <button id="sendBtn" class="absolute right-3 top-1/2 -translate-y-1/2 bg-primary-600 hover:bg-primary-500 dark:bg-sora-gray-dark dark:hover:bg-sora-gray-medium text-white dark:text-white p-2 rounded-full transition-colors"> <!-- Updated to rounded-full -->
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-center mt-2 text-xs text-gray-500 dark:text-sora-gray-light"> <!-- Updated dark text -->
+                            <!-- Create Image Button and Image Settings -->
+                            <div class="flex items-center space-x-2">
+                                <button id="createImageBtn" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-600 dark:bg-sora-gray-dark dark:hover:bg-sora-gray-medium dark:text-white px-3 py-1 rounded-full transition-colors">
+                                    <i class="fas fa-image mr-1"></i> Create Image
+                                </button>
+                                <!-- Image Settings (hidden by default) -->
+                                <div id="imageSettings" class="hidden items-center space-x-2">
+                                    <select id="imageResolution" class="text-xs bg-white dark:bg-black border border-gray-300 dark:border-sora-gray-medium rounded-full px-2 py-1 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-sora-gray-light">
+                                        <option value="1024x1024">1024x1024</option>
+                                        <option value="768x1360">768x1360</option>
+                                        <option value="1360x768">1360x768</option>
+                                        <option value="880x1168">880x1168</option>
+                                        <option value="1168x880">1168x880</option>
+                                        <option value="1248x832">1248x832</option>
+                                        <option value="832x1248">832x1248</option>
+                                    </select>
+                                    <div class="flex items-center">
+                                        <span class="mr-1 text-gray-600 dark:text-white">Shift:</span>
+                                        <input id="imageShift" type="number" min="1" max="5" step="0.1" value="3.0" class="w-12 text-xs bg-white dark:bg-black border border-gray-300 dark:border-sora-gray-medium rounded-full px-2 py-1 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-sora-gray-light">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- System Prompt Indicator - Moved below input -->
+                            <div id="systemPromptIndicator" class="hidden text-primary-500 dark:text-sora-gray-light cursor-pointer transition-opacity mr-2" title="">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <!-- Character Count -->
+                            <span id="charCount" class="ml-auto">0/1000</span>
+                            </div>
+                        </div> <!-- End wrapper for width constraint -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parameters Panel (Collapsible) -->
+            <!-- Parameters Modal -->
+            <div id="paramsPanel" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 opacity-0 scale-95 invisible pointer-events-none transition-all duration-200 ease-in-out"> <!-- Updated opacity -->
+                <div class="bg-white dark:bg-sora-gray-dark rounded-xl shadow-xl w-full max-w-md border border-gray-200 dark:border-sora-gray-medium max-h-[90vh] flex flex-col transform transition-all duration-200 ease-in-out">
+                <div class="bg-gray-100 dark:bg-sora-gray-dark px-6 py-4 border-b border-gray-200 dark:border-sora-gray-medium rounded-t-xl"> <!-- Updated background -->
+                    <div class="flex justify-between items-center"> <!-- Added wrapper for title and close button -->
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">API Parameters</h2> <!-- Updated text -->
+                        <button id="closeParamsModal" class="p-2 rounded-full text-gray-400 hover:text-gray-600 dark:text-sora-gray-light dark:hover:text-white hover:bg-gray-200 dark:hover:bg-sora-gray-medium transition-colors"> <!-- Updated colors -->
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="p-6 space-y-6 overflow-y-auto scrollbar-hide"> <!-- Made content scrollable -->
+                <div class="p-6 space-y-6">
+                    <!-- System Prompt Input -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="systemPromptInput" class="block text-sm font-medium text-gray-700 dark:text-sora-gray-light">System Prompt (Instructions)</label>
+                            <button id="expandSystemPromptBtn" title="Edit in larger window" class="p-1 rounded text-gray-400 hover:text-gray-600 dark:text-sora-gray-light dark:hover:text-white hover:bg-gray-200 dark:hover:bg-sora-gray-medium transition-colors">
+                                Expand <!-- Replaced icon with text for debugging -->
+                            </button>
+                        </div>
+                        
+                        <!-- System Prompt Source Selector -->
+                        <div class="mb-3">
+                            <label class="block text-xs font-medium text-gray-600 dark:text-sora-gray-light mb-1">Prompt Source</label>
+                            <select id="systemPromptSource" class="w-full bg-white dark:bg-black border border-gray-300 dark:border-sora-gray-medium rounded-lg px-3 py-1.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                <option value="file">📁 Built-in (NSFW Base)</option>
+                                <option value="manual">✏️ Manual Input</option>
+                                <option value="library">📚 From Library</option>
+                            </select>
+                        </div>
+                        
+                        <!-- System Prompt Container -->
+                        <div id="systemPromptContainer">
+                            <!-- For File Source -->
+                            <div id="filePromptPreview" class="hidden">
+                                <div class="bg-gray-50 dark:bg-sora-gray-medium border border-gray-300 dark:border-sora-gray-medium rounded-lg p-3 mb-2">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="text-xs font-medium text-gray-600 dark:text-sora-gray-light">Active Built-in Prompt:</span>
+                                        <button id="copyFilePromptBtn" class="text-xs bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 px-2 py-1 rounded transition-colors">
+                                            <i class="fas fa-copy mr-1"></i> Copy to Settings
+                                        </button>
+                                    </div>
+                                    <div id="filePromptText" class="text-sm text-gray-700 dark:text-gray-300 max-h-20 overflow-y-auto scrollbar-thin">
+                                        <!-- File prompt content will be shown here -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- For Manual Input -->
+                            <div id="manualPromptInput">
+                                <textarea id="systemPromptInput" rows="2" class="w-full bg-white dark:bg-black border border-gray-300 dark:border-sora-gray-medium rounded-lg px-4 py-2 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-sora-gray-light focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-sora-gray-light focus:border-transparent resize-none transition-all duration-200 ease-in-out focus:rows-6" placeholder="Enter system prompt... (e.g., You are a helpful assistant)"></textarea>
+                            </div>
+                            
+                            <!-- For Library Source -->
+                            <div id="libraryPromptSelector" class="hidden">
+                                <select id="libraryPromptSelect" class="w-full bg-white dark:bg-black border border-gray-300 dark:border-sora-gray-medium rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500 mb-2">
+                                    <option value="">Select a prompt from library...</option>
+                                    <!-- Library prompts will be populated here -->
+                                </select>
+                                <div id="libraryPromptPreview" class="bg-gray-50 dark:bg-sora-gray-medium border border-gray-300 dark:border-sora-gray-medium rounded-lg p-3 text-sm text-gray-700 dark:text-gray-300 max-h-20 overflow-y-auto scrollbar-thin hidden">
+                                    <!-- Selected library prompt preview -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="mt-2 flex justify-between">
+                            <button id="promptLibraryBtn" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-600 dark:bg-sora-gray-dark dark:hover:bg-sora-gray-medium dark:text-white px-4 py-1 rounded-full transition-colors">
+                                <i class="fas fa-book-open mr-1"></i> Prompt Library
+                            </button>
+                            
+                            <!-- Status indicator -->
+                            <div id="systemPromptStatus" class="text-xs text-gray-500 dark:text-sora-gray-light flex items-center">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                <span id="systemPromptStatusText">Using built-in prompt</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End System Prompt Input -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-sora-gray-light mb-2">API Token</label> <!-- Updated text -->
+                        <div class="relative">
+                            <input id="apiToken" type="password" class="w-full bg-white dark:bg-black border border-gray-300 dark:border-sora-gray-medium rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-sora-gray-light focus:border-transparent" placeholder="Enter your API token"> <!-- Updated background and focus ring -->
+                            <button id="toggleTokenVisibility" class="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 dark:text-sora-gray-light dark:hover:text-white"> <!-- Updated colors -->
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-sora-gray-light mb-2">Model</label> <!-- Updated text -->
+                        <select id="modelSelect" class="w-full bg-white dark:bg-black border border-gray-300 dark:border-sora-gray-medium rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-sora-gray-light focus:border-transparent"> <!-- Updated background and focus ring -->
+                            <option value="chutesai/Mistral-Small-3.1-24B-Instruct-2503">chutesai/mistral-small-3.1-24b-instruct-2503</option>
+                            <option value="deepseek-ai/DeepSeek-R1">deepseek-ai/deepseek-r1</option>
+                            <option value="deepseek-ai/DeepSeek-R1-0528">deepseek-ai/deepseek-r1-0528</option>
+                            <option value="deepseek-ai/DeepSeek-V3-0324">deepseek-ai/deepseek-v3-0324</option>
+                            <option value="deepseek-ai/DeepSeek-V3-Base">deepseek-ai/deepseek-v3-base</option>
+                            <option value="Qwen/Qwen2.5-72B-Instruct">qwen/qwen2.5-72b-instruct</option>
+                            <option value="Qwen/Qwen3-235B-A22B">qwen/qwen3-235b-a22b</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-medium text-gray-700 dark:text-sora-gray-light">Temperature: <span id="tempValue">0.7</span></label> <!-- Updated text -->
+                            </div>
+                            <input id="temperature" type="range" min="0" max="2" step="0.1" value="0.7" class="w-full h-2 bg-gray-200 dark:bg-sora-gray-dark rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary-500 dark:[&::-webkit-slider-thumb]:bg-white"> <!-- Updated track color -->
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-medium text-gray-700 dark:text-sora-gray-light">Max Tokens: <span id="maxTokensValue">4096</span></label> <!-- Updated text -->
+                            </div>
+                            <input id="maxTokens" type="range" min="128" max="8192" step="64" value="4096" class="w-full h-2 bg-gray-200 dark:bg-sora-gray-dark rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary-500 dark:[&::-webkit-slider-thumb]:bg-white"> <!-- Updated track color -->
+                        </div>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="streamCheckbox" type="checkbox" class="w-4 h-4 text-primary-600 dark:text-white bg-gray-100 dark:bg-black border-gray-300 dark:border-sora-gray-medium rounded focus:ring-primary-500 dark:focus:ring-sora-gray-light" checked> <!-- Updated background -->
+                        <label for="streamCheckbox" class="ml-2 text-sm text-gray-700 dark:text-white">Stream Response</label> <!-- Updated text color -->
+                    </div>
+
+                    <button id="testConnectionBtn" class="w-full bg-primary-600 hover:bg-primary-500 dark:bg-sora-gray-dark dark:hover:bg-sora-gray-medium text-white dark:text-white py-2 px-4 rounded-full transition-colors flex items-center justify-center space-x-2"> <!-- Updated to rounded-full -->
+                        <i class="fas fa-plug"></i>
+                        <span>Test Connection</span>
+                    </button>
+                    <!-- UI Settings Section -->
+                    <hr class="border-gray-200 dark:border-sora-gray-medium my-4"> <!-- Updated border -->
+                    <h3 class="text-md font-semibold text-gray-500 dark:text-sora-gray-light mb-3">UI Settings</h3> <!-- Updated text -->
+                    <!-- Font Size Setting Removed -->
+                    <!-- Theme Setting -->
+                     <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-sora-gray-light mb-2">Theme</label> <!-- Updated text -->
+                        <div class="flex space-x-4">
+                            <button id="settingsDarkBtn" class="flex-1 bg-white dark:bg-black border border-gray-300 dark:border-sora-gray-medium rounded-full px-4 py-2 text-gray-900 dark:text-white hover:border-primary-500 dark:hover:border-white transition-colors"> <!-- Updated background, border and rounded -->
+                                Dark
+                            </button>
+                            <button id="settingsLightBtn" class="flex-1 bg-gray-100 border border-gray-300 rounded-full px-4 py-2 text-gray-800 hover:border-primary-500 transition-colors"> <!-- Updated to rounded-full -->
+                                Light
+                            </button>
+                        </div>
+                    </div>
+                    <!-- End UI Settings Section -->
+                    <!-- Save Button -->
+                    <div class="pt-4 border-t border-gray-200 dark:border-sora-gray-medium mt-4"> <!-- Updated border -->
+                         <button id="saveSettingsBtn" class="w-full bg-primary-600 hover:bg-primary-500 dark:bg-white dark:hover:bg-sora-gray-lighter text-white dark:text-black py-2 px-4 rounded-full transition-colors"> <!-- Updated to rounded-full and hover color -->
+                            Save Settings
+                        </button>
+                    </div>
+                </div> <!-- End scrollable content -->
+            </div> <!-- End Modal Box -->
+            </div>
+
+    <!-- System Prompt Editor Modal -->
+    <div id="systemPromptEditorModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-60 opacity-0 scale-95 invisible pointer-events-none transition-all duration-200 ease-in-out"> <!-- Higher z-index -->
+        <div class="bg-white dark:bg-sora-gray-dark rounded-xl shadow-xl w-full max-w-2xl border border-gray-200 dark:border-sora-gray-medium h-[80vh] flex flex-col transform transition-all duration-200 ease-in-out"> <!-- Set explicit height, removed max-h -->
+            <!-- Header -->
+            <div class="bg-gray-100 dark:bg-sora-gray-medium px-6 py-4 border-b border-gray-200 dark:border-sora-gray-dark rounded-t-xl">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Edit System Prompt</h2>
+                    <button id="closeSystemPromptEditorBtn" class="p-2 rounded-full text-gray-400 hover:text-gray-600 dark:text-sora-gray-light dark:hover:text-white hover:bg-gray-200 dark:hover:bg-sora-gray-medium transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Content -->
+            <div class="p-6 flex-1 flex flex-col overflow-hidden"> <!-- Flex column for textarea growth -->
+                <textarea id="systemPromptEditorTextarea" class="w-full flex-1 bg-white dark:bg-black border border-gray-300 dark:border-sora-gray-medium rounded-lg px-4 py-2 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-sora-gray-light focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-sora-gray-light focus:border-transparent resize-none" placeholder="Enter system prompt..."></textarea> <!-- Updated background and focus ring -->
+            </div>
+            <!-- Footer -->
+            <div class="bg-gray-50 dark:bg-sora-gray-dark px-6 py-4 border-t border-gray-200 dark:border-sora-gray-medium rounded-b-xl flex justify-end space-x-3">
+                 <button id="cancelSystemPromptEditorBtn" class="bg-gray-200 hover:bg-gray-300 dark:bg-sora-gray-dark dark:hover:bg-sora-gray-medium text-gray-700 dark:text-white px-4 py-2 rounded-full transition-colors">
+                    Cancel
+                </button>
+                <button id="saveSystemPromptEditorBtn" class="bg-primary-600 hover:bg-primary-500 dark:bg-white dark:hover:bg-sora-gray-lighter text-white dark:text-black px-4 py-2 rounded-full transition-colors">
+                    Save Prompt
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- End System Prompt Editor Modal -->
+    <!-- Prompt Library Modal -->
+    <div id="promptLibraryModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-60 opacity-0 scale-95 invisible pointer-events-none transition-all duration-200 ease-in-out">
+        <div class="bg-white dark:bg-sora-gray-dark rounded-xl shadow-xl w-full max-w-4xl border border-gray-200 dark:border-sora-gray-medium h-[80vh] flex flex-col transform transition-all duration-200 ease-in-out">
+            <!-- Header -->
+            <div class="bg-gray-100 dark:bg-sora-gray-medium px-6 py-4 border-b border-gray-200 dark:border-sora-gray-dark rounded-t-xl flex justify-between items-center">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Prompt Library</h2>
+                <button id="closePromptLibraryBtn" class="p-2 rounded-full text-gray-400 hover:text-gray-600 dark:text-sora-gray-light dark:hover:text-white hover:bg-gray-200 dark:hover:bg-sora-gray-medium transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- Main Content -->
+            <div class="flex-1 flex overflow-hidden">
+                <!-- Prompt List (Left Side) -->
+                <div class="w-1/3 border-r border-gray-200 dark:border-sora-gray-medium flex flex-col">
+                    <div class="p-4 border-b border-gray-200 dark:border-sora-gray-medium">
+                        <button id="addNewPromptBtn" class="w-full bg-primary-600 hover:bg-primary-500 text-white px-4 py-2 rounded-full text-sm">
+                            <i class="fas fa-plus mr-1"></i> Add New Prompt
+                        </button>
+                    </div>
+                    <div id="promptListContainer" class="flex-1 overflow-y-auto p-2 space-y-1">
+                        <!-- Prompt items will be dynamically inserted here -->
+                    </div>
+                </div>
+                <!-- Prompt Editor (Right Side) -->
+                <div class="w-2/3 flex flex-col p-6">
+                    <div class="mb-4">
+                        <label for="promptTitleInput" class="block text-sm font-medium text-gray-700 dark:text-sora-gray-light mb-1">Prompt Title</label>
+                        <input type="text" id="promptTitleInput" class="w-full bg-white dark:bg-black border border-gray-300 dark:border-sora-gray-medium rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500" placeholder="Enter a title for your prompt...">
+                    </div>
+                    <div class="flex-1 flex flex-col mb-4">
+                        <label for="promptContentTextarea" class="block text-sm font-medium text-gray-700 dark:text-sora-gray-light mb-1">Prompt Content</label>
+                        <textarea id="promptContentTextarea" class="w-full flex-1 bg-white dark:bg-black border border-gray-300 dark:border-sora-gray-medium rounded-lg px-4 py-2 text-gray-900 dark:text-white resize-none" placeholder="Enter the prompt content here..."></textarea>
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button id="deletePromptBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full transition-colors hidden">
+                            <i class="fas fa-trash-alt mr-1"></i> Delete
+                        </button>
+                        <button id="savePromptBtn" class="bg-primary-600 hover:bg-primary-500 dark:bg-white dark:text-black px-4 py-2 rounded-full transition-colors">
+                            Save Prompt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- Old Settings Modal Removed -->
+
+    <!-- Scripts will be inserted here by the refactoring process -->
+    <script src="js/systemPrompt_nsfwbase.js"></script>
+    <script src="js/systemPromptManager.js"></script>
+
+    <!-- Image Preview Modal Toggle Function -->
+    <script>
+        function toggleImagePreviewModal(show) {
+            const modal = document.getElementById('imagePreviewModal');
+            if (!modal) return;
+
+            if (show) {
+                // Show modal with animation
+                modal.classList.remove('opacity-0', 'scale-95', 'invisible', 'pointer-events-none');
+                modal.classList.add('opacity-100', 'scale-100', 'visible', 'pointer-events-auto');
+
+                // Prevent body scrolling when modal is open
+                document.body.style.overflow = 'hidden';
+
+                // Add ESC key listener to close modal
+                document.addEventListener('keydown', closeModalOnEsc);
+            } else {
+                // Hide modal with animation
+                modal.classList.remove('opacity-100', 'scale-100', 'visible', 'pointer-events-auto');
+                modal.classList.add('opacity-0', 'scale-95', 'invisible', 'pointer-events-none');
+
+                // Restore body scrolling
+                document.body.style.overflow = '';
+
+                // Remove ESC key listener
+                document.removeEventListener('keydown', closeModalOnEsc);
+
+                // Clear src when hiding to prevent brief flash of old image next time
+                const imgElement = document.getElementById('fullSizeImagePreview');
+                const loadingIndicator = document.getElementById('imageLoadingIndicator');
+
+                if (imgElement) {
+                    // Delay clearing the src to allow fade-out animation to complete
+                    setTimeout(() => {
+                        imgElement.setAttribute('src', '');
+                        imgElement.classList.remove('opacity-0'); // Reset opacity for next time
+
+                        // Reset any error messages that might have been added
+                        const errorMessages = document.querySelectorAll('#imagePreviewModal .text-red-500');
+                        errorMessages.forEach(el => el.remove());
+                    }, 300);
+                }
+
+                // Hide loading indicator
+                if (loadingIndicator) {
+                    loadingIndicator.classList.add('hidden');
+                }
+            }
+        }
+
+        // Function to close modal on ESC key press
+        function closeModalOnEsc(e) {
+            if (e.key === 'Escape') {
+                toggleImagePreviewModal(false);
+            }
+        }
+
+        // Close modal when clicking outside the image
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('imagePreviewModal');
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    // Close only if clicking the background (not the image or close button)
+                    if (e.target === modal) {
+                        toggleImagePreviewModal(false);
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Image Preview Modal -->
+    <div id="imagePreviewModal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 opacity-0 scale-95 invisible pointer-events-none transition-all duration-300 ease-in-out">
+        <div class="relative max-w-[90vw] max-h-[90vh] flex items-center justify-center">
+            <!-- Close button with improved styling -->
+            <button id="closeImagePreviewModal" class="absolute -top-12 right-0 z-60 bg-red-600 hover:bg-red-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors shadow-lg">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <!-- Loading indicator (shows while image is loading) -->
+            <div id="imageLoadingIndicator" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-lg z-40 hidden">
+                <div class="w-12 h-12 border-4 border-t-4 border-primary-500 dark:border-white rounded-full animate-spin"></div>
+            </div>
+
+            <!-- Image container with overflow handling -->
+            <div class="overflow-auto max-w-full max-h-full bg-transparent rounded-lg">
+                <img id="fullSizeImagePreview" src="" alt="Full size preview" class="block max-w-full max-h-[85vh] object-contain rounded-lg shadow-xl transition-all duration-300">
+            </div>
+        </div>
+    </div>
+    <!-- End Image Preview Modal -->
+
+    <!-- Additional script to ensure KaTeX and Prism.js are initialized after page load -->
+    <script>
+        // Initialize KaTeX and Prism.js after the page has fully loaded
+        window.addEventListener('load', function() {
+            // Wait a bit to ensure all resources are loaded
+            setTimeout(function() {
+                // Initialize KaTeX
+                if (typeof renderMathInElement === 'function') {
+                    try {
+                        console.log('Initializing KaTeX after full page load');
+                        renderMathInElement(document.body, {
+                            delimiters: [
+                                {left: '$$', right: '$$', display: true},
+                                {left: '$', right: '$', display: false},
+                                {left: '\\(', right: '\\)', display: false},
+                                {left: '\\[', right: '\\]', display: true}
+                            ],
+                            throwOnError: false,
+                            trust: true,
+                            strict: false
+                        });
+                        console.log('KaTeX initialization after page load complete');
+                    } catch (e) {
+                        console.warn('KaTeX initialization after page load error:', e);
+                    }
+                } else {
+                    console.warn('KaTeX renderMathInElement function not available after page load');
+                }
+
+                // Initialize Prism.js for syntax highlighting
+                if (window.Prism) {
+                    try {
+                        console.log('Initializing Prism.js after full page load');
+                        // Force Prism to highlight all code blocks
+                        document.querySelectorAll('pre code').forEach(function(block) {
+                            try {
+                                // Check if the language is supported
+                                const langClass = block.className.match(/language-(\w+)/);
+                                if (langClass && langClass[1]) {
+                                    const lang = langClass[1];
+                                    // Skip PHP highlighting as it causes errors
+                                    if (lang === 'php') {
+                                        console.log('Skipping PHP highlighting due to known issues');
+                                        return;
+                                    }
+
+                                    // Only highlight if the language grammar is loaded
+                                    if (Prism.languages[lang]) {
+                                        Prism.highlightElement(block);
+                                    } else {
+                                        console.log(`Language grammar for ${lang} not loaded, using plaintext`);
+                                        block.className = 'language-plaintext';
+                                        Prism.highlightElement(block);
+                                    }
+                                } else {
+                                    // No language specified, use plaintext
+                                    block.className = 'language-plaintext';
+                                    Prism.highlightElement(block);
+                                }
+                            } catch (e) {
+                                console.warn('Error highlighting code block:', e);
+                            }
+                        });
+                        console.log('Prism.js initialization after page load complete');
+                    } catch (e) {
+                        console.warn('Prism.js initialization after page load error:', e);
+                    }
+                } else {
+                    console.warn('Prism.js not available after page load');
+                }
+            }, 1000);
+        });
+    </script>
+
+    <!-- Direct Prism.js initialization script -->
+    <script>
+        // Force Prism.js to highlight all code blocks immediately
+        if (window.Prism) {
+            console.log('Direct Prism.js initialization');
+            document.querySelectorAll('pre code').forEach(function(block) {
+                try {
+                    // Check if the language is supported
+                    const langClass = block.className.match(/language-(\w+)/);
+                    if (langClass && langClass[1]) {
+                        const lang = langClass[1];
+                        // Skip PHP highlighting as it causes errors
+                        if (lang === 'php') {
+                            console.log('Skipping PHP highlighting due to known issues');
+                            return;
+                        }
+
+                        // Only highlight if the language grammar is loaded
+                        if (Prism.languages[lang]) {
+                            Prism.highlightElement(block);
+                        } else {
+                            console.log(`Language grammar for ${lang} not loaded, using plaintext`);
+                            block.className = 'language-plaintext';
+                            Prism.highlightElement(block);
+                        }
+                    } else {
+                        // No language specified, use plaintext
+                        block.className = 'language-plaintext';
+                        Prism.highlightElement(block);
+                    }
+                } catch (e) {
+                    console.warn('Error highlighting code block:', e);
+                }
+            });
+
+            // Set up a MutationObserver to watch for new code blocks
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.addedNodes && mutation.addedNodes.length > 0) {
+                        // Check if any of the added nodes contain code blocks
+                        mutation.addedNodes.forEach(function(node) {
+                            if (node.nodeType === 1) { // Element node
+                                const codeBlocks = node.querySelectorAll('pre code');
+                                if (codeBlocks.length > 0) {
+                                    console.log('New code blocks detected, applying syntax highlighting');
+                                    codeBlocks.forEach(function(block) {
+                                        try {
+                                            // Check if the language is supported
+                                            const langClass = block.className.match(/language-(\w+)/);
+                                            if (langClass && langClass[1]) {
+                                                const lang = langClass[1];
+                                                // Skip PHP highlighting as it causes errors
+                                                if (lang === 'php') {
+                                                    console.log('Skipping PHP highlighting due to known issues');
+                                                    return;
+                                                }
+
+                                                // Only highlight if the language grammar is loaded
+                                                if (Prism.languages[lang]) {
+                                                    Prism.highlightElement(block);
+                                                } else {
+                                                    console.log(`Language grammar for ${lang} not loaded, using plaintext`);
+                                                    block.className = 'language-plaintext';
+                                                    Prism.highlightElement(block);
+                                                }
+                                            } else {
+                                                // No language specified, use plaintext
+                                                block.className = 'language-plaintext';
+                                                Prism.highlightElement(block);
+                                            }
+                                        } catch (e) {
+                                            console.warn('Error highlighting code block:', e);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Start observing the document with the configured parameters
+            observer.observe(document.body, { childList: true, subtree: true });
+        }
+    </script>
+        <script src="js/config.js"></script>
+        <script src="js/utils.js"></script>
+        <script src="js/uiElements.js"></script>
+        <script src="js/settings.js"></script>
+        <script src="js/rendering.js"></script>
+        <script src="js/imageHandler.js"></script>
+        <script src="js/thinkingUI.js"></script>
+        <script src="js/messageHandler.js"></script>
+        <script src="js/api.js"></script>
+        <script src="js/uiInteractions.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>

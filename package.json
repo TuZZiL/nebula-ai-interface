@@ -1,0 +1,44 @@
+{
+  "name": "nebula-ai-interface",
+  "version": "1.0.0",
+  "description": "A modern, dark-themed web interface for interacting with Large Language Models (LLMs) and AI image generation services.",
+  "main": "index.html",
+  "scripts": {
+    "start": "node image-proxy-server.js",
+    "start-proxy": "node image-proxy-server.js",
+    "serve-frontend": "live-server --port=8080",
+    "dev": "concurrently \"npm:start-proxy\" \"npm:serve-frontend\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "llm",
+    "ai",
+    "interface",
+    "chatbot",
+    "image-generation",
+    "dark-theme",
+    "web-app",
+    "javascript",
+    "tailwind"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/nebula-ai-interface.git"
+  },
+  "homepage": "https://github.com/yourusername/nebula-ai-interface#readme",
+  "bugs": {
+    "url": "https://github.com/yourusername/nebula-ai-interface/issues"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "live-server": "^1.2.2"
+  }
+}

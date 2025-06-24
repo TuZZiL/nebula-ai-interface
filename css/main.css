@@ -1,0 +1,1267 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+html {
+    /* Set base font size to 80% of browser default */
+    font-size:  90%;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    /* Default text for light mode (Tailwind handles dark:text-white) */
+    /* Default background for light mode (Tailwind handles dark:bg-black) */
+    overflow-x: hidden;
+}
+
+/* Apply base dark mode styles here for initial load */
+html.dark body {
+     background-color: #000000; /* Sora black */
+     color: #FFFFFF; /* Sora white */
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.message-stream {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.typing-indicator::after {
+    content: '...';
+    animation: typing 1.5s infinite;
+    display: inline-block;
+    width: 0;
+}
+
+@keyframes typing {
+    0% { content: '.'; }
+    33% { content: '..'; }
+    66% { content: '...'; }
+}
+
+.glow-effect {
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.5); /* Keep light mode glow? Or make white? */
+     /* Let's keep it blue for now */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Code Syntax Highlighting Styles */
+pre[class*="language-"] {
+    margin: 1em 0;
+    border-radius: 0.5rem;
+    max-height: 500px;
+    overflow: auto;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Light mode code block styles */
+html:not(.dark) pre[class*="language-"] {
+    background: #2d2d2d;
+    color: #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark mode code block styles */
+html.dark pre[class*="language-"] {
+    background: #1a1a1a;
+    border: 1px solid #333333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Prism.js token styles - Okaidia theme */
+code[class*="language-"],
+pre[class*="language-"] {
+    color: #f8f8f2;
+    background: none;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 1em;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.3;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+    border-radius: 0.3em;
+    white-space: pre;
+    line-height: 1.3;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+    background: #272822;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+    padding: .1em;
+    border-radius: .3em;
+    white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #8292a2;
+}
+
+.token.punctuation {
+    color: #f8f8f2;
+}
+
+.token.namespace {
+    opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #f92672;
+}
+
+.token.boolean,
+.token.number {
+    color: #ae81ff;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #a6e22e;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string,
+.token.variable {
+    color: #f8f8f2;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.function,
+.token.class-name {
+    color: #e6db74;
+}
+
+.token.keyword {
+    color: #66d9ef;
+}
+
+.token.regex,
+.token.important {
+    color: #fd971f;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}
+
+/* Code block line numbers */
+.line-numbers .line-numbers-rows {
+    border-right: 1px solid #999;
+    padding-right: 0.8em;
+}
+
+/* Inline code style */
+:not(pre) > code {
+    background: rgba(135, 131, 120, 0.15);
+    color: #eb5757;
+    padding: 0.1em 0.4em;
+    border-radius: 0.3em;
+    white-space: normal;
+    font-size: 0.9em;
+}
+
+/* Dark mode inline code */
+html.dark :not(pre) > code {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ff6b6b;
+}
+
+/* Code block title bar */
+.code-title {
+    background: #444;
+    color: white;
+    font-family: monospace;
+    padding: 0.5em 1em;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    font-size: 0.8em;
+    border-bottom: 1px solid #555;
+}
+
+html.dark .code-title {
+    background: #333;
+    border-bottom: 1px solid #444;
+}
+
+/* Code copy button hover effect */
+.code-copy-btn {
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+    z-index: 20;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: rgba(51, 51, 51, 0.8);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+pre:hover .code-copy-btn {
+    opacity: 0.8;
+}
+
+.code-copy-btn:hover {
+    opacity: 1 !important;
+    transform: scale(1.05);
+    background-color: rgba(51, 51, 51, 0.9);
+}
+
+.code-copy-btn:active {
+    transform: scale(0.95);
+}
+
+/* Ensure proper positioning for code blocks */
+pre[class*="language-"] {
+    position: relative;
+}
+
+/* Improve code block scrollbar */
+pre[class*="language-"]::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Improve code block line wrapping for mobile */
+@media (max-width: 640px) {
+    pre[class*="language-"] {
+        white-space: pre-wrap;
+        word-break: break-word;
+        line-height: 1.2;
+    }
+
+    code[class*="language-"] {
+        line-height: 1.2;
+    }
+}
+
+/* Fix message container to properly contain code blocks */
+.message-stream {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.message-stream pre[class*="language-"] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+/* Fix spacing between elements in code blocks */
+.message-stream pre[class*="language-"] * {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Ensure code doesn't overflow on small screens */
+.message-stream code {
+    word-break: break-word;
+    white-space: pre-wrap;
+    line-height: 1.3;
+}
+
+/* Fix line spacing in code blocks */
+.message-stream pre code {
+    line-height: 1.3;
+}
+
+/* Fix token display in code blocks */
+.token {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    border: none;
+    box-shadow: none;
+    background: none;
+}
+
+/* Fix spacing in code blocks */
+pre[class*="language-"] span {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    line-height: inherit;
+}
+
+/* Fix spacing between lines in code blocks */
+pre[class*="language-"] .token.operator + .token.operator,
+pre[class*="language-"] .token.punctuation + .token.punctuation {
+    margin-left: 0;
+}
+
+/* Fix spacing for line breaks in code blocks */
+pre[class*="language-"] br {
+    display: block;
+    content: "";
+    margin-top: 0;
+}
+
+/* Fix spacing for code blocks without language class */
+pre:not([class*="language-"]) {
+    background: #272822;
+    color: #f8f8f2;
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+    border-radius: 0.3em;
+    white-space: pre;
+    line-height: 1.3;
+}
+
+/* Fix spacing for code blocks without language class in dark mode */
+html.dark pre:not([class*="language-"]) {
+    background: #1a1a1a;
+    border: 1px solid #333333;
+}
+
+/* Fix code blocks with no content */
+pre:empty {
+    display: none;
+}
+
+/* Fix code blocks with only whitespace */
+pre:only-whitespace {
+    display: none;
+}
+
+/* Fix code blocks with plaintext language */
+pre code.language-plaintext {
+    color: #f8f8f2;
+    background: none;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 1em;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.3;
+}
+
+/* Fix code blocks with ruby language */
+pre code.language-ruby {
+    color: #f8f8f2;
+    background: none;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 1em;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.3;
+}
+
+/* Fix code blocks with no language class */
+pre code:not([class*="language-"]) {
+    color: #f8f8f2;
+    background: none;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 1em;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.3;
+}
+
+/* Fix code blocks with no content */
+pre code:empty {
+    display: none;
+}
+
+/* Fix code blocks with only whitespace */
+pre code:only-whitespace {
+    display: none;
+}
+
+/* Fix code blocks with no content in dark mode */
+html.dark pre code {
+    color: #f8f8f2;
+    background: none;
+}
+
+/* Fix code blocks with no content in light mode */
+html:not(.dark) pre code {
+    color: #333;
+    background: none;
+}
+
+/* Fix spacing issues in code blocks */
+pre[class*="language-"] {
+    line-height: 1.2 !important;
+    padding: 0.5em !important;
+}
+
+code[class*="language-"] {
+    line-height: 1.2 !important;
+    padding: 0 !important;
+}
+
+pre[class*="language-"] code[class*="language-"] {
+    line-height: 1.2 !important;
+    padding: 0 !important;
+}
+
+/* Fix spacing between lines */
+.token {
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Fix line breaks in code blocks */
+pre[class*="language-"] br {
+    display: block !important;
+    content: "" !important;
+    margin-top: 0 !important;
+    line-height: 1.2 !important;
+}
+
+/* Fix spacing for specific tokens */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata,
+.token.punctuation,
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted,
+.token.boolean,
+.token.number,
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted,
+.token.operator,
+.token.entity,
+.token.url,
+.token.variable,
+.token.atrule,
+.token.attr-value,
+.token.function,
+.token.class-name,
+.token.keyword,
+.token.regex,
+.token.important {
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Fix spacing in message stream code blocks */
+.message-stream pre[class*="language-"] {
+    line-height: 1.2 !important;
+    padding: 0.5em !important;
+    margin: 0.5em 0 !important;
+}
+
+.message-stream code[class*="language-"] {
+    line-height: 1.2 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Fix spacing for code blocks in dark mode */
+html.dark pre[class*="language-"] {
+    line-height: 1.2 !important;
+}
+
+html.dark code[class*="language-"] {
+    line-height: 1.2 !important;
+}
+
+/* Fix spacing for code blocks in light mode */
+html:not(.dark) pre[class*="language-"] {
+    line-height: 1.2 !important;
+}
+
+html:not(.dark) code[class*="language-"] {
+    line-height: 1.2 !important;
+}
+
+/* Fix spacing for code blocks with no language class */
+pre:not([class*="language-"]) code {
+    line-height: 1.2 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    white-space: pre !important;
+}
+
+/* Fix spacing for code blocks with plaintext language */
+pre code.language-plaintext {
+    line-height: 1.2 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    white-space: pre !important;
+}
+
+/* Fix spacing for code blocks with ruby language */
+pre code.language-ruby {
+    line-height: 1.2 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    white-space: pre !important;
+}
+
+/* Fix spacing for code blocks with html language */
+pre code.language-html {
+    line-height: 1.2 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    white-space: pre !important;
+}
+
+/* Override any browser default styles that might affect code blocks */
+pre, code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace !important;
+}
+
+/* Fix spacing for all code elements */
+pre *, code * {
+    line-height: 1.2 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Fix spacing for all spans in code blocks */
+pre span, code span {
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline !important;
+}
+
+/* Fix spacing for all divs in code blocks */
+pre div, code div {
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Fix spacing for all p in code blocks */
+pre p, code p {
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Fix spacing for all lines in code blocks */
+.line {
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Fix spacing for all code blocks in prose */
+.prose pre {
+    line-height: 1.2 !important;
+    margin: 0.5em 0 !important;
+}
+
+.prose code {
+    line-height: 1.2 !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream .prose pre {
+    line-height: 1.2 !important;
+    margin: 0.5em 0 !important;
+}
+
+.message-stream .prose code {
+    line-height: 1.2 !important;
+}
+
+/* Fix spacing for code blocks in dark mode */
+html.dark .prose pre {
+    line-height: 1.2 !important;
+}
+
+html.dark .prose code {
+    line-height: 1.2 !important;
+}
+
+/* Fix spacing for code blocks in light mode */
+html:not(.dark) .prose pre {
+    line-height: 1.2 !important;
+}
+
+html:not(.dark) .prose code {
+    line-height: 1.2 !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre {
+    margin-top: 0.5em !important;
+    margin-bottom: 0.5em !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre code {
+    display: block !important;
+    line-height: 1.2 !important;
+    white-space: pre !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre code * {
+    line-height: 1.2 !important;
+    white-space: pre !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre code span {
+    line-height: 1.2 !important;
+    white-space: pre !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre code br {
+    display: block !important;
+    content: "" !important;
+    margin-top: 0 !important;
+    line-height: 1.2 !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre code .token {
+    line-height: 1.2 !important;
+    white-space: pre !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre code .token + .token {
+    margin-left: 0 !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre code .token.operator + .token.operator,
+.message-stream pre code .token.punctuation + .token.punctuation {
+    margin-left: 0 !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre[class*="language-"] {
+    margin-top: 0.5em !important;
+    margin-bottom: 0.5em !important;
+    padding: 0.5em !important;
+    line-height: 1.2 !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre[class*="language-"] code[class*="language-"] {
+    line-height: 1.2 !important;
+    white-space: pre !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre[class*="language-"] code[class*="language-"] * {
+    line-height: 1.2 !important;
+    white-space: pre !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre[class*="language-"] code[class*="language-"] span {
+    line-height: 1.2 !important;
+    white-space: pre !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre[class*="language-"] code[class*="language-"] br {
+    display: block !important;
+    content: "" !important;
+    margin-top: 0 !important;
+    line-height: 1.2 !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre[class*="language-"] code[class*="language-"] .token {
+    line-height: 1.2 !important;
+    white-space: pre !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre[class*="language-"] code[class*="language-"] .token + .token {
+    margin-left: 0 !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre[class*="language-"] code[class*="language-"] .token.operator + .token.operator,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.punctuation + .token.punctuation {
+    margin-left: 0 !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre[class*="language-"] code[class*="language-"] .line {
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre[class*="language-"] code[class*="language-"] .line-number {
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre[class*="language-"] code[class*="language-"] .line-numbers-rows {
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Fix spacing for code blocks in message stream */
+.message-stream pre[class*="language-"] code[class*="language-"] .token.comment,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.prolog,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.doctype,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.cdata,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.punctuation,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.property,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.tag,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.constant,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.symbol,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.deleted,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.boolean,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.number,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.selector,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.attr-name,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.string,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.char,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.builtin,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.inserted,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.operator,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.entity,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.url,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.variable,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.atrule,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.attr-value,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.function,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.class-name,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.keyword,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.regex,
+.message-stream pre[class*="language-"] code[class*="language-"] .token.important {
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline !important;
+}
+
+/* Improve message container width */
+.relative.rounded-lg.p-4 {
+    max-width: 90% !important;
+    width: fit-content !important;
+}
+
+/* Ensure code blocks stay within container */
+@media (max-width: 768px) {
+    pre[class*="language-"] {
+        max-width: calc(100vw - 6rem);
+        font-size: 0.85rem;
+    }
+
+    .code-title {
+        max-width: calc(100vw - 6rem);
+        font-size: 0.75rem;
+    }
+
+    /* Adjust thinking spoiler for mobile */
+    .thinking-spoiler-bubble {
+        width: 95%;
+        max-width: 95%;
+    }
+
+    .spoiler-header {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .thinking-spoiler-bubble.expanded .spoiler-content {
+        max-height: 500px;
+    }
+
+    .spoiler-header-text {
+        font-size: 0.9rem;
+    }
+}
+
+/* Thinking Spoiler Styles */
+.thinking-spoiler-bubble {
+    background-color: #f3f4f6;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    transition: all 0.3s ease-out;
+    width: 90%;
+    max-width: 90%;
+    color: #1f2937;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+html.dark .thinking-spoiler-bubble {
+    background-color: #1f2937;
+    color: #f3f4f6;
+    border: 1px solid rgba(55, 65, 81, 0.5);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.spoiler-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    user-select: none;
+    color: inherit;
+    font-weight: 500;
+    background-color: rgba(229, 231, 235, 0.3);
+    border-bottom: 1px solid transparent;
+    transition: background-color 0.2s ease;
+}
+
+.spoiler-header:hover {
+    background-color: rgba(229, 231, 235, 0.5);
+}
+
+html.dark .spoiler-header {
+    background-color: rgba(55, 65, 81, 0.3);
+}
+
+html.dark .spoiler-header:hover {
+    background-color: rgba(55, 65, 81, 0.5);
+}
+
+.spoiler-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.spoiler-header .icon {
+    margin-right: 0.5rem;
+}
+
+html.dark .spoiler-header {
+    color: #f3f4f6;
+}
+
+html.dark .spoiler-header .icon,
+html.dark .spoiler-header .chevron-icon {
+    color: #9ca3af;
+}
+
+.spoiler-header .icon,
+.spoiler-header .chevron-icon {
+    color: #4b5563;
+}
+
+.spoiler-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, padding 0.3s ease-out;
+    padding: 0 1rem;
+    color: inherit;
+    opacity: 0;
+    transition: max-height 0.5s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.thinking-spoiler-bubble.expanded .spoiler-content {
+    max-height: 800px; /* Increased max-height */
+    overflow-y: auto;
+    padding: 1rem 1rem 1rem 1rem;
+    border-top: 1px solid rgba(229, 231, 235, 0.5);
+    opacity: 1;
+}
+
+html.dark .thinking-spoiler-bubble.expanded .spoiler-content {
+    border-top: 1px solid rgba(55, 65, 81, 0.5);
+    color: #f3f4f6;
+}
+
+/* Ensure content is visible in dark mode */
+html.dark .spoiler-content .prose {
+    color: #f3f4f6;
+}
+
+/* Ensure content is visible in light mode */
+.spoiler-content .prose {
+    color: #1f2937;
+}
+
+/* Style for code blocks inside thinking spoiler */
+.spoiler-content pre {
+    margin: 0.5rem 0;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 0.25rem;
+}
+
+html.dark .spoiler-content pre {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.thinking-spoiler-bubble .chevron-icon {
+    transition: transform 0.3s ease;
+}
+
+.thinking-spoiler-bubble.expanded .chevron-icon {
+    transform: rotate(180deg);
+}
+
+/* Image Modal Animation */
+@keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+#imagePreviewModal.visible .relative {
+    animation: zoomIn 0.3s ease-out;
+}
+
+#fullSizeImagePreview {
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* Image thumbnail hover effect */
+.chat-image-thumbnail {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.chat-image-thumbnail:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+
+/* Regenerate button styles - simplified to match site design */
+.regenerate-images-btn {
+    animation: fadeIn 0.5s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    font-weight: 500;
+}
+
+.regenerate-images-btn:active, .regenerate-images-btn.active {
+    transform: translateY(1px);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* System Prompt Indicator Tooltip */
+#systemPromptIndicator {
+    position: relative;
+}
+
+#systemPromptIndicator:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: -25px;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+    z-index: 100;
+}
+/* Feature 1: Dynamic Textarea Resizing */
+#userInput {
+    overflow-y: hidden;
+    resize: none;
+    min-height: 1.5rem; /* Approx 1 line */
+    max-height: 7.5rem; /* Approx 5 lines, can be adjusted */
+    transition: height 0.1s ease-out; /* Smooth height transition */
+}
+/* Feature 2: Clear Input Button */
+#clearInputBtn {
+    /* Tailwind classes handle most styling. Add specific overrides or enhancements here if needed. */
+    /* Example: Slightly more pronounced transition or specific cursor */
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+#clearInputBtn:hover {
+    /* Example: Slightly scale up on hover for more interactivity */
+    /* transform: scale(1.1); */ /* Tailwind hover:scale-110 can also be used */
+}
+/* Feature 3: Refined System Prompt Active Indicator */
+#systemPromptIndicator {
+    position: relative; /* For tooltip positioning */
+    /* Icon color is handled by Tailwind text-primary-500 dark:text-sora-gray-light */
+}
+
+#systemPromptIndicator:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%; /* Position above the icon */
+    left: 50%;
+    transform: translateX(-50%) translateY(-4px); /* Center and add small gap */
+    background-color: #262521; /* Dark background (similar to dark-800) */
+    color: #f5f5f4; /* Light text (similar to warm-gray-100) */
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem; /* text-xs */
+    line-height: 1.2;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    opacity: 0; /* Hidden by default, shown on hover */
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+#systemPromptIndicator:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Optional: Prevent tooltip from showing if title is empty */
+#systemPromptIndicator[title=""]:hover::after,
+#systemPromptIndicator:not([title]):hover::after {
+    display: none;
+}
+/* Custom Scrollbar for #userInput */
+#userInput::-webkit-scrollbar {
+    width: 8px;
+}
+
+#userInput::-webkit-scrollbar-track {
+    background: #2D2D2D; /* sora-gray-darker or similar */
+    border-radius: 4px;
+}
+
+#userInput::-webkit-scrollbar-thumb {
+    background: #555; /* sora-gray-medium or similar */
+    border-radius: 4px;
+}
+
+#userInput::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+/* Firefox scrollbar styling */
+#userInput {
+    scrollbar-width: thin;
+    scrollbar-color: #555 #2D2D2D; /* thumb color track color */
+}
+/* Prompt Library Button Style */
+#promptLibraryBtn {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+#promptLibraryBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+html.dark #promptLibraryBtn:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+/* System Prompt Source Selector Styles */
+#systemPromptSource {
+    font-size: 0.875rem;
+}
+
+#systemPromptSource option {
+    padding: 0.5rem;
+}
+
+/* File Prompt Preview Styles */
+#filePromptPreview {
+    transition: all 0.2s ease-in-out;
+}
+
+#filePromptText {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.4;
+}
+
+/* Copy File Prompt Button */
+#copyFilePromptBtn {
+    font-size: 0.75rem;
+    transition: all 0.2s ease-in-out;
+}
+
+#copyFilePromptBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+html.dark #copyFilePromptBtn:hover {
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
+}
+
+/* Library Prompt Selector Styles */
+#libraryPromptSelector {
+    transition: all 0.2s ease-in-out;
+}
+
+#libraryPromptSelect {
+    font-size: 0.875rem;
+}
+
+#libraryPromptPreview {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.4;
+    transition: all 0.2s ease-in-out;
+}
+
+/* System Prompt Status Indicator */
+#systemPromptStatus {
+    transition: all 0.2s ease-in-out;
+}
+
+#systemPromptStatusText {
+    font-weight: 500;
+}
+
+/* Scrollbar styles for prompt previews */
+#filePromptText::-webkit-scrollbar,
+#libraryPromptPreview::-webkit-scrollbar {
+    width: 4px;
+}
+
+#filePromptText::-webkit-scrollbar-track,
+#libraryPromptPreview::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#filePromptText::-webkit-scrollbar-thumb,
+#libraryPromptPreview::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.5);
+    border-radius: 2px;
+}
+
+html.dark #filePromptText::-webkit-scrollbar-thumb,
+html.dark #libraryPromptPreview::-webkit-scrollbar-thumb {
+    background: rgba(75, 85, 99, 0.5);
+}
+
+/* Hover effects for system prompt container */
+#systemPromptContainer > div {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Animation for switching between prompt sources */
+.prompt-source-transition {
+    animation: promptSourceFadeIn 0.3s ease-in-out;
+}
+
+@keyframes promptSourceFadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(-5px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
